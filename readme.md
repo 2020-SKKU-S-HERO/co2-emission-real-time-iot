@@ -1,4 +1,4 @@
-# 구글 클라우드 플랫폼 및 MQTT 설명
+# 탄소배출량 실시간 산출 시스템
 
 ---
 
@@ -10,13 +10,37 @@
 
 ssh를 사용하여 접속할 수 있다. ras key는 rsa-gcp-key 파일을 사용한다.
 rsa-gcp-key 파일이 있는 곳에서 터미널을 열고 다음의 쉘 명령어를 입력한다.
+외부 아이피는 34.74.238.233이다.
 
 ```shell script
-ssh -i ./rsa-gcp-key shero@34.64.176.192
+ssh -i ./rsa-gcp-key shero@34.64.238.233
 ```
 
 해당 명령어를 입력하면 rsa-key에 대한 비밀번호를 입력하라고 한다.
 비밀번호는 'shero'이다.
+
+### 서버 상태
+
+구글 클라우드 플랫폼의 리눅스 서버에 MySQL과 mosquitto를 구축하였다.
+
+#### MySQL
+
+MySQL은 서버 내부에서 root로 접속할 수 있고, 비밀번호는 'shero'이다.
+
+```shell script
+mysql -u root -p
+```
+
+서버 외부에서는 shero로 접속할 수 있고, 비밀번호는 'shero'이다.
+
+```shell script
+mysql -h 34.64.238.233 -u shero -p
+```
+
+'sheroDB'라는 이름의 DB가 생성되어 있고, 그 안에 'co2_emissions'라는 이름의 테이블이 생성되어 있다.
+해당 테이블의 열은 date_time, emissions로 2개이고, 각각 DATETIME, DOUBLE(7, 2) 타입을 갖는다.
+
+![](.readme_images/mysql_table.png)
 
 ---
 
@@ -89,6 +113,50 @@ def on_message(client, userdata, msg):
 mqtt_client.on_message = on_message
 ```
 
+### MQTT를 이용해 구글 클라우드 플랫폼 리눅스 서버의 MySQL에 데이터 입력하기
+
+먼저 리눅스 서버에서 MQTT 구독자 프로그램을 실행시켜야 한다.
+
+```shell script
+python3 /home/shero/sub.py
+```
+
+이제 pub.py에 작성된 함수를 보자.
+
+```python
+def publish_to_server(date_time: str, emissions: float) -> None:
+    """ 서버에 있는 브로커로 데이터를 발행한다.
+
+    Args:
+        date_time: 날짜와 시간 (format: YY-MM-DD hh:mm:ss)
+        emissions: 배출량
+    """
+    payload = f"{date_time}|{str(emissions)}"
+    mqtt_client = mqtt.Client("")
+    mqtt_client.connect(host, port)
+    mqtt_client.publish(topic, payload)
+    mqtt_client.loop(2)
+```
+
+해당 함수를 이용해 현재 시간에 배출량 3500.00이라는 값을 데이터베이스로 전송해본다.
+테스트 현재 시각은 2020-07-13 22:43:23 이다.
+
+```python
+now = datetime.now()
+current_time_str = f"{now.year}-{now.month}-{now.day} {now.hour}:{now.minute}:{now.second}"
+publish_to_server(current_time_str, 3500)
+```
+
+이제 MySQL에서 다음 쿼리문으로 확인한다.
+
+```mysql
+SELECT * FROM co2_emissions;
+```
+
+다음 캡처에서 성공적으로 전송된 것을 확인할 수 있다.
+
+![](.readme_images/mysql_ex.png)
+
 ---
 
 ## 문제 대응
@@ -108,6 +176,6 @@ MQTT 및 MySQL에 연결하는 것에 문제가 있었다. 방화벽이 문제�
 이제 리눅스 서버에서 방화벽 설정을 해주어야 한다. 다음 명령어로 방화벽 허용 설정을 할 수 있다.
 
 ```shell script
-iptables -I INPUT 1 -p tcp -dport 1883 -j ACCEPT
+iptables -I INPUT 1 -p tcp --dport 1883 -j ACCEPT
 iptables -I OUTPUT 1 -p tcp --dport 1883 -j ACCEPT
 ```
