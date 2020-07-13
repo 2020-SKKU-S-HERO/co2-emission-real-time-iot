@@ -1,5 +1,7 @@
 import paho.mqtt.client as mqtt
 from datetime import datetime
+import threading
+import random
 
 host = "34.64.238.233"
 port = 1883
@@ -20,7 +22,14 @@ def publish_to_server(date_time: str, emissions: float) -> None:
     mqtt_client.loop(2)
 
 
-# test
-now = datetime.now()
-current_time_str = f"{now.year}-{now.month}-{now.day} {now.hour}:{now.minute}:{now.second}"
-publish_to_server(current_time_str, 3500)
+# test loop code
+def test_loop():
+    now = datetime.now()
+    current_time_str = f"{now.year}-{now.month}-{now.day} {now.hour}:{now.minute}:{now.second}"
+    publish_to_server(current_time_str, 3500 + random.randrange(-2000, 2000))
+    print("data published")
+    threading.Timer(1, test_loop).start()
+
+test_loop()
+
+

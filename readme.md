@@ -19,7 +19,7 @@ ssh -i ./rsa-gcp-key shero@34.64.238.233
 
 ### 서버 상태
 
-구글 클라우드 플랫폼의 리눅스 서버에 MySQL과 mosquitto를 구축하였다.
+구글 클라우드 플랫폼의 리눅스 서버에 MySQL과 mosquitto, Grafana를 구축하였다.
 
 #### MySQL
 
@@ -39,6 +39,13 @@ mysql -h 34.64.238.233 -u shero -p
 해당 테이블의 열은 date_time, emissions로 2개이고, 각각 DATETIME, DOUBLE(7, 2) 타입을 갖는다.
 
 ![](.readme_images/mysql_table.png)
+
+#### Grafana
+
+[그라파나 사이트](http://34.64.238.233:3000/) 링크를 통해 접속할 수 있다.
+MySQL과 연동하여 데이터를 시각적으로 보여주고 있다.
+
+![](.readme_images/grafana.png)
 
 ---
 
