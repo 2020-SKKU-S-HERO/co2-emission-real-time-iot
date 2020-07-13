@@ -19,22 +19,19 @@ rsa-gcp-key 파일이 있는 곳에서 터미널을 열고 다음의 쉘 명령�
 ssh -i ./rsa-gcp-key shero@34.64.238.233
 ```
 
-해당 명령어를 입력하면 rsa-key에 대한 비밀번호를 입력하라고 한다.
-비밀번호는 'shero'이다.
-
 ### 서버 상태
 
 구글 클라우드 플랫폼의 리눅스 서버에 MySQL과 mosquitto, Grafana를 구축하였다.
 
 #### MySQL
 
-MySQL은 서버 내부에서 root로 접속할 수 있고, 비밀번호는 'shero'이다.
+MySQL은 서버 내부에서 root로 접속할 수 있다.
 
 ```shell script
 mysql -u root -p
 ```
 
-서버 외부에서는 shero로 접속할 수 있고, 비밀번호는 'shero'이다.
+서버 외부에서는 shero로 접속할 수 있다.
 
 ```shell script
 mysql -h 34.64.238.233 -u shero -p
