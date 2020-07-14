@@ -21,7 +21,8 @@ ssh -i ./rsa-gcp-key shero@34.64.238.233
 
 ### 서버 상태
 
-구글 클라우드 플랫폼의 리눅스 서버에 MySQL과 mosquitto, Grafana를 구축하였다.
+구글 클라우드 플랫폼의 리눅스 서버에 MySQL과 mosquitto, Grafana를 구축하였고,
+백그라운드에 파이썬으로 작성된 구독자 프로그램을 실행 중이다.
 
 #### MySQL
 
@@ -48,6 +49,28 @@ mysql -h 34.64.238.233 -u shero -p
 MySQL과 연동하여 데이터를 시각적으로 보여주고 있다.
 
 ![](.readme_images/grafana.png)
+
+#### 파이썬 구독자 프로그램
+
+다음 명령어로 백그라운드에 파이썬 구독자 프로그램을 실행할 수 있다.
+
+```shell script
+nohup python3 /home/shero/sub.py
+```
+
+다른 터미널을 열어서 다음 명령어로 백그라운드에서 돌린 구독자 프로그램을 확인할 수 있다.
+
+```shell script
+ps -ef | grep sub.py
+```
+
+![](.readme_images/background-program.png)
+
+종료시키려면 다음 명령어와 프로세스 아이디를 넘기면 된다.
+
+```shell script
+kill 14253
+```
 
 ---
 
@@ -122,13 +145,7 @@ mqtt_client.on_message = on_message
 
 ### MQTT를 이용해 구글 클라우드 플랫폼 리눅스 서버의 MySQL에 데이터 입력하기
 
-먼저 리눅스 서버에서 MQTT 구독자 프로그램을 실행시켜야 한다.
-
-```shell script
-python3 /home/shero/sub.py
-```
-
-이제 pub.py에 작성된 함수를 보자.
+pub.py에 작성된 함수를 보자. 해당 함수를 사용하여 배출량 데이터를 전송할 수 있다.
 
 ```python
 def publish_to_server(date_time: str, emissions: float) -> None:
