@@ -19,6 +19,10 @@ rsa-gcp-key 파일이 있는 곳에서 터미널을 열고 다음의 쉘 명령�
 ssh -i ./rsa-gcp-key shero@34.64.238.233
 ```
 
+shell을 사용하지 않을 경우 putty_gen을 사용하여 rsa-key를 생성한다.
+private key는 적당한 장소에 저장하고, public key를 GCP(Google Clout Platform)에 등록한다.
+putty를 사용하여 '이름@34.74.238.233'으로 접속하면 된다.
+
 ### 서버 상태
 
 구글 클라우드 플랫폼의 리눅스 서버에 MySQL과 mosquitto, Grafana를 구축하였고,
@@ -31,6 +35,7 @@ MySQL은 서버 내부에서 root로 접속할 수 있다.
 ```shell script
 mysql -u root -p
 ```
+password는 shero이다.
 
 서버 외부에서는 shero로 접속할 수 있다.
 
