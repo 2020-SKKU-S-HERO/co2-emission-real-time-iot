@@ -21,7 +21,7 @@ ssh -i ./rsa-gcp-key shero@34.64.238.233
 
 shell을 사용하지 않을 경우 putty_gen을 사용하여 rsa-key를 생성한다.
 private key는 적당한 장소에 저장하고, public key를 GCP(Google Clout Platform)에 등록한다.
-putty를 사용하여 '이름@34.74.238.233'으로 접속하면 된다.
+putty를 사용하여 '이름@34.64.238.233'으로 접속하면 된다.
 
 ### 서버 상태
 
