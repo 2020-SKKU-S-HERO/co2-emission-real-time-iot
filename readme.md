@@ -218,7 +218,7 @@ iptables -I OUTPUT 1 -p tcp --dport 1883 -j ACCEPT
 'mobius' db 'cin'이라는 테이블에 데이터들이 저장된다.
 cin 테이블을 조회해보면 다음과 같은 결과물들이 나온다.
 
-![](.readme_images/db_reading.jpg)
+![](.readme_images/db_reading.JPG)
 
 - pi(parent id)에는 서버, 보낸 주체, 보낸 데이터내용이 담긴다.  
 여기서는 /Mobius/air11/co2 이므로 Mobius 서버를 통해 air11 이라는 기기에서 co2 데이터를 보냈음을 뜻한다.  
