@@ -210,3 +210,10 @@ MQTT 및 MySQL에 연결하는 것에 문제가 있었다. 방화벽이 문제�
 iptables -I INPUT 1 -p tcp --dport 1883 -j ACCEPT
 iptables -I OUTPUT 1 -p tcp --dport 1883 -j ACCEPT
 ```
+
+----  
+
+## 데이터 베이스 해석
+
+'mobius' db 'cin'이라는 테이블에 데이터들이 저장된다.
+cin 테이블을 조회해보면 다음과 같은 결과물들이 나온다.
