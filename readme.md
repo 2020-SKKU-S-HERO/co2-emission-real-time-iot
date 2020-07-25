@@ -217,3 +217,16 @@ iptables -I OUTPUT 1 -p tcp --dport 1883 -j ACCEPT
 
 'mobius' db 'cin'이라는 테이블에 데이터들이 저장된다.
 cin 테이블을 조회해보면 다음과 같은 결과물들이 나온다.
+
+![](.readme_images/db_reading.jpg)
+
+- pi(parent id)에는 서버, 보낸 주체, 보낸 데이터내용이 담긴다.  
+여기서는 /Mobius/air11/co2 이므로 Mobius 서버를 통해 air11 이라는 기기에서 co2 데이터를 보냈음을 뜻한다.  
+현장에서는 여러 공정마다 edge를 부착해야하므로 보낸 주체도 구별해줘야한다.
+
+- ri(resource id)에는 pi에 보낸 시간이 추가된다.  
+YYYY/MM/DD/SSSSSSSSS 인데 끝에 9자리는 확실하지는 않지만 00:00부터 ms 단위로 센 듯 하다. 예를 들어 01:10에 데이터를 보냈다면 00:00으로부터 70분 즉 4200초가 지났으므로 ms 단위로는 4200000이다. 이거 해석해주는 함수나 메소드 분명 있다.
+
+- cs(category size)이다. 왜 있는지 모르겠다.
+
+- con이 데이터다. 즉 여기서는 co2 값이 121로 들어오고 있다.
